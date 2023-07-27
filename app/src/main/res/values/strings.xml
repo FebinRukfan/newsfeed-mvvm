@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NewsFeed</string>
+    <string name="main_title">TITLE</string>
+    <string name="published_at">PUBLISHED AT</string>
+</resources>

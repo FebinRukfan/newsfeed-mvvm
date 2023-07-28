@@ -48,7 +48,6 @@ class NewsFeedAdapter : RecyclerView.Adapter<NewsFeedAdapter.NewsFeedResponseIte
     }
 
     override fun getItemCount(): Int {
-        Log.v(TAG,"my_size" + differ.currentList.size.toString())
         return differ.currentList.size
     }
 

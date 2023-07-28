@@ -22,8 +22,13 @@ class NewsFeedViewModel(
     val newsFeed: MutableLiveData<Resource<List<NewsFeedResponseItem>>> = MutableLiveData()
     var newsFeedPage = 1
 
+    val newsFeedType: MutableLiveData<Resource<List<NewsFeedResponseItem>>> = MutableLiveData()
+    var newsFeedTypePage = 1
+
+
     init {
         getNewsFeed()
+        getNewsFeedTypes()
     }
 
     fun getNewsFeed() = viewModelScope.launch {
@@ -35,6 +40,49 @@ class NewsFeedViewModel(
     }
 
     private fun handleNewsFeedResponse(response: Response<List<NewsFeedResponseItem>>): Resource<List<NewsFeedResponseItem>> {
+        if(response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+
+                Log.v(TAG,"responz" + resultResponse)
+
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    // get news field types only
+    fun getNewsFeedTypes() = viewModelScope.launch {
+        newsFeedType.postValue(Resource.Loading())
+
+        val response = newsFeedRespository.getNewsFeed( newsFeedTypePage)
+
+        newsFeedType.postValue(handleNewsFeedTypesResponse(response))
+    }
+
+
+    private fun handleNewsFeedTypesResponse(response: Response<List<NewsFeedResponseItem>>): Resource<List<NewsFeedResponseItem>> {
+        if(response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+
+                Log.v(TAG,"responz" + resultResponse)
+
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+ fun getNewsFeedByType(type: String) = viewModelScope.launch {
+        newsFeed.postValue(Resource.Loading())
+
+        val response = newsFeedRespository.getNewsFeedByType( type, newsFeedPage)
+
+        newsFeed.postValue(handleNewsFeedResponseByType(response))
+    }
+
+
+ private fun handleNewsFeedResponseByType(response: Response<List<NewsFeedResponseItem>>): Resource<List<NewsFeedResponseItem>> {
         if(response.isSuccessful) {
             response.body()?.let { resultResponse ->
 

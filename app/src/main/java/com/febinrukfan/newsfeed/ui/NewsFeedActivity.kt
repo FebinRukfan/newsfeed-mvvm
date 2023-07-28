@@ -10,13 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.febinrukfan.newsfeed.databinding.ActivityNewsFeedBinding
 import com.febinrukfan.newsfeed.repository.NewsFeedRepository
 import com.febinrukfan.newsfeed.ui.adapter.NewsFeedAdapter
+import com.febinrukfan.newsfeed.ui.adapter.NewsFeedTypeAdapter
 import com.febinrukfan.newsfeed.utils.Resource
 
-class NewsFeedActivity : AppCompatActivity() {
+class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickListener{
 
     lateinit var viewModel: NewsFeedViewModel
 
     lateinit var newsFeedAdapter: NewsFeedAdapter
+    lateinit var newsFeedTypeAdapter: NewsFeedTypeAdapter
 
     val TAG = this.javaClass.simpleName
 
@@ -57,16 +59,44 @@ class NewsFeedActivity : AppCompatActivity() {
                 is Resource.Loading -> {
                     showProgressBar()
                 }
-
-                else -> {}
             }
-        })    }
+        })
+
+        // Get news feed type only
+        viewModel.newsFeedType.observe(this, Observer { response ->
+            when(response) {
+                is Resource.Success -> {
+
+                    response.data?.let { newsResponse ->
+
+                        newsFeedTypeAdapter.differ.submitList(newsResponse)
+                    }
+                }
+                is Resource.Error -> {
+                    response.message?.let { message ->
+                        Log.e(TAG, "An error occured: $message")
+                    }
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+
+
+    }
 
     private fun setupRecyclerView() {
         newsFeedAdapter = NewsFeedAdapter()
         binding.rvNewFeed.apply {
             adapter = newsFeedAdapter
             layoutManager = LinearLayoutManager(this@NewsFeedActivity)
+        }
+
+        // passing activity context here to invoke api call from adapter class
+        newsFeedTypeAdapter = NewsFeedTypeAdapter(this)
+        binding.rvTypes.apply {
+            adapter = newsFeedTypeAdapter
+            layoutManager = LinearLayoutManager(this@NewsFeedActivity,LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
@@ -76,6 +106,12 @@ class NewsFeedActivity : AppCompatActivity() {
 
     private fun showProgressBar() {
         binding.paginationProgressBar.visibility = View.VISIBLE
+    }
+
+    override fun onItemClick(type: String) {
+
+        viewModel.getNewsFeedByType(type)
+
     }
 }
 

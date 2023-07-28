@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,7 +54,7 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Log.e(TAG, "An error occured: $message")
+                        Toast.makeText(this, "An error occured: $message", Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {
@@ -74,7 +75,7 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
                 }
                 is Resource.Error -> {
                     response.message?.let { message ->
-                        Log.e(TAG, "An error occured: $message")
+                        Toast.makeText(this, "An error occured: $message", Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {
@@ -92,7 +93,7 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
             layoutManager = LinearLayoutManager(this@NewsFeedActivity)
         }
 
-        // passing activity context here to invoke api call from adapter class
+        // passing item click listener call back to get on item click from adapter
         newsFeedTypeAdapter = NewsFeedTypeAdapter(this)
         binding.rvTypes.apply {
             adapter = newsFeedTypeAdapter

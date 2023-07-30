@@ -1,5 +1,6 @@
-package com.febinrukfan.newsfeed.ui
+package com.febinrukfan.newsfeed.newsfeed.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
@@ -9,9 +10,9 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.febinrukfan.newsfeed.NewsFeedApplication
-import com.febinrukfan.newsfeed.models.NewsFeedResponseItem
-import com.febinrukfan.newsfeed.repository.NewsFeedRepository
+import com.febinrukfan.newsfeed.app.NewsFeedApplication
+import com.febinrukfan.newsfeed.newsfeed.model.NewsFeedResponseItem
+import com.febinrukfan.newsfeed.newsfeed.model.repository.NewsFeedRepository
 import com.febinrukfan.newsfeed.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -48,6 +49,7 @@ class NewsFeedViewModel(
                 newsFeed.postValue(handleNewsFeedResponse(response))
             }
             else{
+
                 newsFeed.postValue(Resource.Error("No internet connection"))
 
             }
@@ -105,8 +107,6 @@ class NewsFeedViewModel(
         if(response.isSuccessful) {
             response.body()?.let { resultResponse ->
 
-                Log.v(TAG,"responz" + resultResponse)
-
                 return Resource.Success(resultResponse)
             }
         }
@@ -150,6 +150,7 @@ class NewsFeedViewModel(
         return Resource.Error(response.message())
  }
 
+    @SuppressLint("ObsoleteSdkInt")
     private fun checkInternetConnection()
     : Boolean {
         val connectivityManager = getApplication<NewsFeedApplication>().getSystemService(
@@ -171,6 +172,21 @@ class NewsFeedViewModel(
             return networkInfo != null && networkInfo.isConnected
         }
     }
+
+
+
+    // OFFLINE
+
+    fun saveNewsFeedResponseItem(newsFeedResponseItem: NewsFeedResponseItem) = viewModelScope.launch{
+        newsFeedRespository.upsert(newsFeedResponseItem)
+    }
+
+    fun getAllNewsFeedResponseIem() = newsFeedRespository.getAllNewsFeed()
+
+    fun deleteAllNewsFeedResponseIem(newsFeedResponseItem: NewsFeedResponseItem) = viewModelScope.launch {
+        newsFeedRespository.deleteAllNewsFeed(newsFeedResponseItem)
+    }
+
 
 
 

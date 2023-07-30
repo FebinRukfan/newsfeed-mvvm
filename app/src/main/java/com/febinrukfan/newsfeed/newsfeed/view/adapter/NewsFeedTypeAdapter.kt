@@ -1,11 +1,11 @@
-package com.febinrukfan.newsfeed.ui.adapter
+package com.febinrukfan.newsfeed.newsfeed.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.febinrukfan.newsfeed.databinding.NewFeedTypeItemBinding
-import com.febinrukfan.newsfeed.models.NewsFeedResponseItem
+import com.febinrukfan.newsfeed.newsfeed.model.NewsFeedResponseItem
 
 class NewsFeedTypeAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<NewsFeedTypeAdapter.NewsFeedTypeItemViewHolder>() {
 
@@ -41,7 +41,7 @@ class NewsFeedTypeAdapter(private val itemClickListener: OnItemClickListener) : 
     val differ = AsyncListDiffer(this, differCallback)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsFeedTypeAdapter.NewsFeedTypeItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsFeedTypeItemViewHolder {
 
         val binding = NewFeedTypeItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)

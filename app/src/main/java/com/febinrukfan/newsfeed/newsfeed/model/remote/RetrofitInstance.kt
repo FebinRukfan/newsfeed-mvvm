@@ -1,5 +1,6 @@
-package com.febinrukfan.newsfeed.api
+package com.febinrukfan.newsfeed.newsfeed.model.remote
 
+import com.febinrukfan.newsfeed.newsfeed.model.remote.api.NewsFeedAPI
 import com.febinrukfan.newsfeed.utils.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

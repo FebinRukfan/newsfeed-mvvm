@@ -1,4 +1,4 @@
-package com.febinrukfan.newsfeed
+package com.febinrukfan.newsfeed.app
 
 import android.app.Application
 

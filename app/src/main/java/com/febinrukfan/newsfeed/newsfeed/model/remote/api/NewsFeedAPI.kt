@@ -1,6 +1,6 @@
-package com.febinrukfan.newsfeed.api
+package com.febinrukfan.newsfeed.newsfeed.model.remote.api
 
-import com.febinrukfan.newsfeed.models.NewsFeedResponseItem
+import com.febinrukfan.newsfeed.newsfeed.model.NewsFeedResponseItem
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

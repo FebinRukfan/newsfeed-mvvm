@@ -1,9 +1,9 @@
-package com.febinrukfan.newsfeed.ui
+package com.febinrukfan.newsfeed.newsfeed.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.febinrukfan.newsfeed.repository.NewsFeedRepository
+import com.febinrukfan.newsfeed.newsfeed.model.repository.NewsFeedRepository
 
 class NewsFeedViewModelProviderFactory(
     private val app: Application,

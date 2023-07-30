@@ -7,7 +7,7 @@
 
 
     <application
-        android:name=".NewsFeedApplication"
+        android:name=".app.NewsFeedApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,7 +18,7 @@
         android:theme="@style/Theme.NewsFeed"
         tools:targetApi="31">
         <activity
-            android:name=".ui.NewsFeedActivity"
+            android:name=".newsfeed.view.NewsFeedActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

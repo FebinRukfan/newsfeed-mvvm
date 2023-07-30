@@ -1,4 +1,4 @@
-package com.febinrukfan.newsfeed.models
+package com.febinrukfan.newsfeed.newsfeed.model
 
 
 data class TypeAttributes(

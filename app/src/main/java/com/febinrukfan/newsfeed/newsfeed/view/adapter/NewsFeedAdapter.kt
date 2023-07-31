@@ -1,7 +1,6 @@
 package com.febinrukfan.newsfeed.newsfeed.view.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -31,11 +30,11 @@ class NewsFeedAdapter(private var context: Context) : RecyclerView.Adapter<NewsF
 
             val sharedPreferences = context.getSharedPreferences("Saved_Ids", Context.MODE_PRIVATE)
 
-            if(sharedPreferences.getInt("${get.id}",0) != get.id && get.idLocal == null){
-                binding.ivSave.setImageResource(R.drawable.deleted)
-            }else{
-                binding.ivSave.setImageResource(R.drawable.saved)
+            binding.ivSave.setImageResource(R.drawable.deleted)
 
+
+            if(sharedPreferences.getInt("${get.id}",0) == get.id){
+                binding.ivSave.setImageResource(R.drawable.saved)
             }
 
             binding.ivSave.setOnClickListener {
@@ -43,22 +42,16 @@ class NewsFeedAdapter(private var context: Context) : RecyclerView.Adapter<NewsF
                 onItemClickListener?.let { it(get) }
 
 
-
-                if(sharedPreferences.getInt("${get.id}",0) != get.id && get.idLocal == null){
-
-                    Log.e(TAG,"shared_pref"+ sharedPreferences.getInt("${get.id}",0))
+                if(sharedPreferences.getInt("${get.id}",0) != get.id ){
 
 
-                    binding.ivSave.setImageResource(R.drawable.deleted)
-
-                    sharedPreferences.edit().apply(){
-                        putInt("${get.id}",get.id)
-                    }.apply()
-
-                }else{
                     binding.ivSave.setImageResource(R.drawable.saved)
 
-                    sharedPreferences.edit().remove("${get.id}").apply()
+
+
+                }else{
+                    binding.ivSave.setImageResource(R.drawable.deleted)
+
 
                 }
 

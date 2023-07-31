@@ -7,14 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class NewsFeedRepository(
-    val db : NewsFeedDatabase
-    )
+    val db: NewsFeedDatabase)
 {
 
     suspend fun getNewsFeed(pageNumber: Int) =
-        RetrofitInstance.api.getNewsFeed(pageNumber)
-
-   suspend fun getNewsFeedTypes(pageNumber: Int) =
         RetrofitInstance.api.getNewsFeed(pageNumber)
 
     suspend fun getNewsFeedByType(type: String, pageNumber: Int) =
@@ -28,9 +24,9 @@ class NewsFeedRepository(
     }
     fun getAllNewsFeed() = db.getNewsFeedDao().getAllNewsFeed()
 
-    suspend fun deleteAllNewsFeed(newsFeedResponseItem: NewsFeedResponseItem){
+    suspend fun deleteAllNewsFeed(id: Int){
         withContext(Dispatchers.IO){
-            db.getNewsFeedDao().deleteAllNewsFeed(newsFeedResponseItem)
+            db.getNewsFeedDao().deleteAllNewsFeed(id)
         }
     }
 

@@ -14,12 +14,6 @@ interface NewsFeedAPI {
     ): Response<List<NewsFeedResponseItem>>
 
     @GET("v1/items?lineupSlug=news")
-    suspend fun getNewsFeedTypes(
-        @Query("page")
-        pageNumber: Int = 1
-    ): Response<List<NewsFeedResponseItem>>
-
-    @GET("v1/items?lineupSlug=news")
     suspend fun getNewsFeedByType(
         @Query("type")
         type: String,

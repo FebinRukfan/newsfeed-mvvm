@@ -13,7 +13,7 @@ interface NewsFeedDao {
     @Query("SELECT * FROM newsfeed ORDER BY readablePublishedAt DESC")
     fun getAllNewsFeed(): LiveData<List<NewsFeedResponseItem>>
 
-    @Delete()
-    fun deleteAllNewsFeed(newsFeedResponseItem: NewsFeedResponseItem)
+    @Query("DELETE  FROM newsfeed WHERE id = :id")
+    fun deleteAllNewsFeed(id: Int)
 
 }

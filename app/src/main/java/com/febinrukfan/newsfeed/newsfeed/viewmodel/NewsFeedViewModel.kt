@@ -32,7 +32,6 @@ class NewsFeedViewModel(
     val newsFeedType: MutableLiveData<Resource<List<NewsFeedResponseItem>>> = MutableLiveData()
     var newsFeedTypePage = 1
 
-
     init {
         getNewsFeed()
         getNewsFeedTypes()
@@ -151,7 +150,7 @@ class NewsFeedViewModel(
  }
 
     @SuppressLint("ObsoleteSdkInt")
-    private fun checkInternetConnection()
+    fun checkInternetConnection()
     : Boolean {
         val connectivityManager = getApplication<NewsFeedApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE
@@ -183,8 +182,9 @@ class NewsFeedViewModel(
 
     fun getAllNewsFeedResponseIem() = newsFeedRespository.getAllNewsFeed()
 
-    fun deleteAllNewsFeedResponseIem(newsFeedResponseItem: NewsFeedResponseItem) = viewModelScope.launch {
-        newsFeedRespository.deleteAllNewsFeed(newsFeedResponseItem)
+
+    fun deleteAllNewsFeedResponseIem(id: Int) = viewModelScope.launch {
+        newsFeedRespository.deleteAllNewsFeed(id)
     }
 
 

@@ -27,14 +27,12 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
     private lateinit var networkCheck: NetworkCheck
 
     lateinit var newsFeedAdapter: NewsFeedAdapter
+
     lateinit var newsFeedTypeAdapter: NewsFeedTypeAdapter
 
     val TAG = this.javaClass.simpleName
 
     private lateinit var binding: ActivityNewsFeedBinding
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +50,7 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
         newsFeedTypeObserver() //observing news type when online
         networkCheck()
         initializeFab()
-        saveSelectedNews()
+        saveSelectedNews() // save selecting news from list
 
 
 
@@ -63,6 +61,7 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
         builder.setTitle("No Internet Connection")
         builder.setMessage("Make sure you're connected to a Wi-Fi or mobile network and try again")
         val alertDialog = builder.create()
+        alertDialog.setCancelable(false)
 
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok") { dialogInterface, _ ->
 
@@ -76,6 +75,9 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
         networkCheck = NetworkCheck(application)
         networkCheck.observe(this) { isConnected ->
             if (isConnected) {
+
+                newsFeedTypeObserver()
+                newsFeedObserver()
                 alertDialog.dismiss()
             } else {
                 alertDialog.show()
@@ -87,13 +89,24 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
         newsFeedAdapter.setOnItemClickListener {
 
             val sharedPreferences = application.getSharedPreferences("Saved_Ids", Context.MODE_PRIVATE)
+
             if(sharedPreferences.getInt("${it.id}",0) != it.id){
+
+                sharedPreferences.edit().apply(){
+                    putInt("${it.id}",it.id)
+                }.apply()
+
                 viewModel.saveNewsFeedResponseItem(it)   // Saving selected news to database
 
-                Log.e(TAG, "¬" + " save")
+                Log.e(TAG, "inzide" + " save")
             }else{
-                viewModel.deleteAllNewsFeedResponseIem(it)   // Saving selected news to database
+
+                sharedPreferences.edit().remove("${it.id}").apply()
+
+                viewModel.deleteAllNewsFeedResponseIem(it.id)   // Saving selected news to database
                 Log.e(TAG, "inzide" + " delete")
+
+
             }
 
 
@@ -137,6 +150,10 @@ class NewsFeedActivity : AppCompatActivity() , NewsFeedTypeAdapter.OnItemClickLi
                     hideProgressBar()
                     response.message?.let { message ->
                         Toast.makeText(this, "An error occured: $message", Toast.LENGTH_LONG).show()
+
+                        viewModel.getAllNewsFeedResponseIem().observe(this, Observer { newsResposeItem ->
+                            newsFeedAdapter.differ.submitList(newsResposeItem)
+                        })
                     }
                 }
                 is Resource.Loading -> {
